@@ -264,7 +264,15 @@ kbd{
   border-color:rgba(255,120,200,.5);
 }
 #touch button:active{transform:scale(.94);box-shadow:0 0 22px rgba(34,231,255,.5)}
-@media (pointer:coarse){ #touch{display:flex} .keys{display:none} }
+/* ❚❚ pause glyph: small paired bars, spaced to read as a pause icon */
+#touch button[data-act="pause"]{font-size:14px;letter-spacing:2px}
+@media (pointer:coarse){
+  #touch{display:flex}
+  .keys{display:none}
+  /* touch devices get the mobile hiding even in wide landscape */
+  .hide-mobile{display:none}
+  canvas#nextCv{flex:0 0 auto;height:224px}
+}
 
 /* ---------- responsive ---------- */
 @media (max-width:940px){
@@ -273,8 +281,10 @@ kbd{
   #board{height:min(56vh,520px)}
   .col{flex-direction:row;flex-wrap:wrap;width:100%;align-items:stretch}
   .col .panel{flex:1 1 200px}
+  .hide-mobile{display:none}
   #btnSound{flex:1 1 100%}
-  canvas#holdCv,canvas#nextCv{flex:0 0 auto;height:120px}
+  /* keep the four queued pieces stacked with air between them */
+  canvas#nextCv{flex:0 0 auto;height:224px}
 }
 @media (max-width:560px){
   .col{gap:8px}

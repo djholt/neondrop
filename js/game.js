@@ -751,7 +751,9 @@
     let iv = null;
     const fire = () => {
       A.ensure();
-      if (state === 'menu' || state === 'over') { startGame(); return; }
+      // pad buttons never start or restart the game; that is the
+      // Start / Play again button's job alone
+      if (state === 'menu' || state === 'over') return;
       switch (act) {
         case 'left': if (tryMove(-1)) sfx.move(); break;
         case 'right': if (tryMove(1)) sfx.move(); break;
@@ -782,6 +784,25 @@
     setupMini(nextCv);
     updateMinis();
   });
+
+  // mobile hiding applied from JS so it works even if a stale cached sheet
+  // wins the race; inline styles outrank stylesheets, and the panels are
+  // located by their long-existing ids/classes, not new markup
+  function applyMobileUI() {
+    const narrow = window.innerWidth <= 940 || window.matchMedia('(pointer:coarse)').matches;
+    const targets = [];
+    const hc = $('holdCv');
+    if (hc && hc.closest('.panel')) targets.push(hc.closest('.panel'));
+    document.querySelectorAll('.keys').forEach(el => targets.push(el));
+    document.querySelectorAll('.hide-mobile').forEach(el => { if (targets.indexOf(el) === -1) targets.push(el); });
+    targets.forEach(el => { el.style.display = narrow ? 'none' : ''; });
+    // the Next canvas spacing fix, also applied inline
+    nextCv.style.height = narrow ? '224px' : '';
+    nextCv.style.flex = narrow ? '0 0 auto' : '';
+    updateMinis();
+  }
+  window.addEventListener('resize', applyMobileUI);
+  applyMobileUI();
 
   /* ---------------- init ---------------- */
   grid = emptyGrid();

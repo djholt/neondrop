@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>NEON DROP — Tetris</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -23,12 +22,12 @@
 
   <main id="layout">
     <section class="col" id="colLeft">
-      <div class="panel">
+      <div class="panel hide-mobile">
         <h3 class="ph">Hold <kbd>C</kbd></h3>
         <canvas id="holdCv"></canvas>
       </div>
       <button id="btnSound" class="btn small">🔊 Sound on</button>
-      <div class="panel keys">
+      <div class="panel keys hide-mobile">
         <h3 class="ph">Controls</h3>
         <ul>
           <li><kbd>←</kbd><kbd>→</kbd><span>Move</span></li>
@@ -52,13 +51,13 @@
         <div class="screen" id="screenStart">
           <p class="hint">Clear lines. Chase the neon.</p>
           <button class="btn" id="btnStart">▶&nbsp; Start</button>
-          <p class="tiny">or press <kbd>Enter</kbd></p>
+          <p class="tiny hide-mobile">or press <kbd>Enter</kbd></p>
         </div>
 
         <div class="screen hidden" id="screenPause">
           <h2 class="big">PAUSED</h2>
           <button class="btn" id="btnResume">Resume</button>
-          <p class="tiny">press <kbd>P</kbd></p>
+          <p class="tiny hide-mobile">press <kbd>P</kbd></p>
         </div>
 
         <div class="screen hidden" id="screenOver">
@@ -75,7 +74,7 @@
         <button data-act="ccw"   aria-label="Rotate counter-clockwise">⟲</button>
         <button data-act="cw"    aria-label="Rotate clockwise">⟳</button>
         <button data-act="right" aria-label="Move right">▶</button>
-        <button data-act="pause" aria-label="Pause">⏸</button>
+        <button data-act="pause" aria-label="Pause">❚❚</button>
         <button data-act="drop" class="wide">⤓ DROP</button>
       </div>
     </section>
