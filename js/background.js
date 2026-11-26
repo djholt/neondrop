@@ -119,7 +119,7 @@
   }
 
   function makeBlob() {
-    return {
+    const b = {
       x: Math.random() * gw,
       y: Math.random() * gh,
       r: Math.min(gw, gh) * (0.18 + Math.random() * 0.26),
@@ -130,8 +130,43 @@
       sway: 0.04 + Math.random() * 0.08,
       phase: Math.random() * Math.PI * 2,
       pulse: 0.05 + Math.random() * 0.1,
+      flash: 0,          // smash energy: >0 while a cleared-row color glows
+      fc: null,          // flash color, [r,g,b]
     };
+    b.fc = b.color;
+    return b;
   }
+
+  function hexRgb(h) {
+    const n = parseInt(h.slice(1), 16);
+    return [n >> 16 & 255, n >> 8 & 255, n & 255];
+  }
+
+  // Line smash: light up gas blobs with the cleared rows' block colors.
+  // More lines = more blobs AND more intensity per blob. The flash rides the
+  // blob's own color/alpha and decays over ~2s, so it fades as part of the
+  // nebulosity instead of switching off.
+  window.NEONBURST = function (lines, colors) {
+    if (!blobs.length) return;
+    const cols = (colors && colors.length ? colors : ['#818cf8'])
+      .map(c => (typeof c === 'string' ? hexRgb(c) : c));
+    // level: 0 = piece placed normally (the old hard-drop glow),
+    // 0.5 = hard drop (a notch stronger + more blobs),
+    // 1+ = line smash: more blobs and more punch per extra line
+    const count = Math.min(blobs.length, 4 + Math.floor(lines * 5));
+    const intensity = lines <= 0 ? 1.7 : lines < 1 ? 2.0 : 2.4 + (lines - 1) * 1.4;
+    // shuffle blob indices so a random spread of blobs lights up
+    const idx = blobs.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) {
+      const j = (Math.random() * (i + 1)) | 0;
+      const t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+    }
+    for (let k = 0; k < count; k++) {
+      const b = blobs[idx[k]];
+      b.flash = Math.min(6, Math.max(b.flash, intensity * (0.7 + Math.random() * 0.6)));
+      b.fc = cols[(Math.random() * cols.length) | 0];
+    }
+  };
 
   // Nebula gas: painted per pixel at 1/10 scale, dithered BEFORE rounding to
   // 8 bits so banding rings never form; upscale + CSS blur smooth it further.
@@ -147,6 +182,18 @@
       b.rr = b.r * (1 + 0.15 * Math.sin(elapsed * b.pulse + b.phase));
       b.aa = b.a * (0.7 + 0.3 * Math.sin(elapsed * b.pulse * 1.7 + b.phase * 2));
       b.rr2 = b.rr * b.rr;
+
+      // smash flash: bleed toward the cleared-row color and brighten,
+      // then decay smoothly (~2s tail) into the normal gas breathing
+      if (b.flash > 0) {
+        b.flash *= Math.exp(-dt / 1.15);
+        if (b.flash < 0.01) b.flash = 0;
+      }
+      const w = Math.min(0.95, b.flash * 0.42);
+      b.cr = b.color[0] + (b.fc[0] - b.color[0]) * w;
+      b.cg = b.color[1] + (b.fc[1] - b.color[1]) * w;
+      b.cb = b.color[2] + (b.fc[2] - b.color[2]) * w;
+      b.da = b.aa * (1 + 2.8 * b.flash);
     }
 
     let i = 0;
@@ -158,10 +205,10 @@
           const dy = py - bl.y;
           const t2 = (dx * dx + dy * dy) / bl.rr2;
           if (t2 < 1) {
-            const fall = (1 - t2) * (1 - t2) * bl.aa;
-            r += bl.color[0] * fall;
-            g += bl.color[1] * fall;
-            b += bl.color[2] * fall;
+            const fall = (1 - t2) * (1 - t2) * bl.da;
+            r += bl.cr * fall;
+            g += bl.cg * fall;
+            b += bl.cb * fall;
           }
         }
         const dither = Math.random() * 2 - 1;

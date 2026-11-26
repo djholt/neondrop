@@ -98,10 +98,11 @@ body::after{
 
 /* ---------- layout ---------- */
 #layout{
-  display:flex;gap:16px;align-items:flex-start;justify-content:center;
+  display:flex;gap:16px;align-items:stretch;justify-content:center;
   width:100%;max-width:1080px;
 }
 .col{display:flex;flex-direction:column;gap:12px;width:172px;flex:0 0 auto}
+.col > .panel{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
 
 .panel{
   background:var(--panel);
@@ -120,8 +121,8 @@ body::after{
   margin-bottom:8px;
   display:flex;justify-content:space-between;align-items:center;
 }
-canvas#holdCv{display:block;width:100%;height:84px;border-radius:8px;background:rgba(2,4,14,.5)}
-canvas#nextCv{display:block;width:100%;height:262px;border-radius:8px;background:rgba(2,4,14,.5)}
+canvas#holdCv{display:block;width:100%;height:auto;flex:1 1 auto;min-height:60px;border-radius:8px;background:rgba(2,4,14,.5)}
+canvas#nextCv{display:block;width:100%;height:auto;flex:1 1 auto;min-height:120px;border-radius:8px;background:rgba(2,4,14,.5)}
 
 .stat{
   display:flex;justify-content:space-between;align-items:baseline;
@@ -139,11 +140,18 @@ canvas#nextCv{display:block;width:100%;height:262px;border-radius:8px;background
 .keys li{display:flex;gap:8px;align-items:center;padding:3px 0}
 .keys li span{flex:1;text-align:right;color:#c3d6f2;font-weight:600}
 kbd{
+  display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;
+  min-width:26px;height:20px;padding:0 7px;
+  box-sizing:border-box;
+  line-height:1;vertical-align:middle;text-align:center;
+  /* do not inherit the panel header's .28em letter-spacing: the trailing
+     space after the last glyph would push it off-center inside the box */
+  letter-spacing:0;
   font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;
   background:rgba(40,60,120,.35);
   border:1px solid rgba(130,190,255,.3);
   border-bottom-width:2px;
-  border-radius:6px;padding:1px 7px;color:#dff3ff;
+  border-radius:6px;color:#dff3ff;
 }
 
 /* ---------- board ---------- */
@@ -266,7 +274,7 @@ kbd{
   .col{flex-direction:row;flex-wrap:wrap;width:100%;align-items:stretch}
   .col .panel{flex:1 1 200px}
   #btnSound{flex:1 1 100%}
-  canvas#nextCv{height:120px}
+  canvas#holdCv,canvas#nextCv{flex:0 0 auto;height:120px}
 }
 @media (max-width:560px){
   .col{gap:8px}

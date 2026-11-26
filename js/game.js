@@ -248,6 +248,8 @@
 
     shake = Math.min(10, shake + 3 + d * 0.35);
     sfx.hardDrop();
+    // harder nebula bloom than a normal place (lockPiece adds its own too)
+    if (window.NEONBURST) window.NEONBURST(0.5, [current.color]);
 
     // impact dust
     eachCell(current.m, (cx, cy) => {
@@ -283,6 +285,8 @@
     current = null;
     sfx.lock();
     shake = Math.min(10, shake + 1.5);
+    // every placed piece blooms the nebula in its color
+    if (window.NEONBURST) window.NEONBURST(0, [cur.color]);
 
     if (topOut) { gameOver(); return; }
 
@@ -323,6 +327,17 @@
     sfx.clear(n, chain);
     shake = Math.min(14, shake + 2 + n * 2);
     if (window.NEONPULSE) window.NEONPULSE(isQuad ? 1 : 0.35 + n * 0.08);
+
+    // nebula smash: feed the cleared rows' block colors to the background gas
+    if (window.NEONBURST) {
+      const cols = [];
+      for (const ry of rows)
+        for (let x = 0; x < COLS; x++) {
+          const c = grid[ry][x];
+          if (c && cols.indexOf(c) === -1) cols.push(c);
+        }
+      window.NEONBURST(n, cols);
+    }
     if (isQuad) boostBoard(0.5);
 
     // level up
@@ -456,7 +471,18 @@
     });
   }
 
+  function miniSynced(cv) {
+    const w = Math.round(cv.clientWidth * DPR);
+    const h = Math.round(cv.clientHeight * DPR);
+    return cv.width === w && cv.height === h;
+  }
+
   function updateMinis() {
+    // the flex-stretched canvas box can change size after init (font swap,
+    // layout settling) without a window resize; re-sync the backing store so
+    // the bitmap always maps 1:1 to CSS pixels and blocks stay square
+    if (!miniSynced(holdCv)) setupMini(holdCv);
+    if (!miniSynced(nextCv)) setupMini(nextCv);
     drawMiniSet(hctx, holdCv.clientWidth || 148, holdCv.clientHeight || 84, [holdKey]);
     const q = queue.slice(0, 4);
     while (q.length < 4) q.push(null);
@@ -768,5 +794,6 @@
   hud();
   showScreen('start');
   music.onBeat = () => { if (window.NEONPULSE) window.NEONPULSE(0.3); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { updateMinis(); });
   requestAnimationFrame(frame);
 })();

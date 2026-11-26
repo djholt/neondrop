@@ -27,16 +27,21 @@
         <h3 class="ph">Hold <kbd>C</kbd></h3>
         <canvas id="holdCv"></canvas>
       </div>
-      <div class="panel stats">
-        <h3 class="ph">Stats</h3>
-        <div class="stat"><span>Score</span><b id="uiScore" class="num">0</b></div>
-        <div class="stat"><span>Best</span><b id="uiBest" class="num">0</b></div>
-        <div class="stat"><span>Level</span><b id="uiLevel" class="num">1</b></div>
-        <div class="stat"><span>Lines</span><b id="uiLines" class="num">0</b></div>
-        <div class="stat"><span>Combo</span><b id="uiCombo" class="num">—</b></div>
-        <div class="stat"><span>Time</span><b id="uiTime" class="num">0:00</b></div>
-      </div>
       <button id="btnSound" class="btn small">🔊 Sound on</button>
+      <div class="panel keys">
+        <h3 class="ph">Controls</h3>
+        <ul>
+          <li><kbd>←</kbd><kbd>→</kbd><span>Move</span></li>
+          <li><kbd>↓</kbd><span>Soft drop</span></li>
+          <li><kbd>Space</kbd><span>Hard drop</span></li>
+          <li><kbd>↑</kbd>/<kbd>X</kbd><span>Rotate ⟳</span></li>
+          <li><kbd>Z</kbd><span>Rotate ⟲</span></li>
+          <li><kbd>A</kbd><span>Flip 180°</span></li>
+          <li><kbd>C</kbd><span>Hold</span></li>
+          <li><kbd>P</kbd><span>Pause</span></li>
+          <li><kbd>M</kbd><span>Mute</span></li>
+        </ul>
+      </div>
     </section>
 
     <section id="stage">
@@ -80,19 +85,14 @@
         <h3 class="ph">Next</h3>
         <canvas id="nextCv"></canvas>
       </div>
-      <div class="panel keys">
-        <h3 class="ph">Controls</h3>
-        <ul>
-          <li><kbd>←</kbd><kbd>→</kbd><span>Move</span></li>
-          <li><kbd>↓</kbd><span>Soft drop</span></li>
-          <li><kbd>Space</kbd><span>Hard drop</span></li>
-          <li><kbd>↑</kbd>/<kbd>X</kbd><span>Rotate ⟳</span></li>
-          <li><kbd>Z</kbd><span>Rotate ⟲</span></li>
-          <li><kbd>A</kbd><span>Flip 180°</span></li>
-          <li><kbd>C</kbd><span>Hold</span></li>
-          <li><kbd>P</kbd><span>Pause</span></li>
-          <li><kbd>M</kbd><span>Mute</span></li>
-        </ul>
+      <div class="panel stats">
+        <h3 class="ph">Stats</h3>
+        <div class="stat"><span>Score</span><b id="uiScore" class="num">0</b></div>
+        <div class="stat"><span>Best</span><b id="uiBest" class="num">0</b></div>
+        <div class="stat"><span>Level</span><b id="uiLevel" class="num">1</b></div>
+        <div class="stat"><span>Lines</span><b id="uiLines" class="num">0</b></div>
+        <div class="stat"><span>Combo</span><b id="uiCombo" class="num">—</b></div>
+        <div class="stat"><span>Time</span><b id="uiTime" class="num">0:00</b></div>
       </div>
     </section>
   </main>
