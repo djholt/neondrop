@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>NEON DROP — Tetris</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="gas" aria-hidden="true"></canvas>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div id="grid-floor" aria-hidden="true"></div>
+
+<div id="app">
+  <header id="top">
+    <h1 id="title"><span class="t-neon">NEON</span><span class="t-drop">DROP</span></h1>
+  </header>
+
+  <main id="layout">
+    <section class="col" id="colLeft">
+      <div class="panel">
+        <h3 class="ph">Hold <kbd>C</kbd></h3>
+        <canvas id="holdCv"></canvas>
+      </div>
+      <div class="panel stats">
+        <h3 class="ph">Stats</h3>
+        <div class="stat"><span>Score</span><b id="uiScore" class="num">0</b></div>
+        <div class="stat"><span>Best</span><b id="uiBest" class="num">0</b></div>
+        <div class="stat"><span>Level</span><b id="uiLevel" class="num">1</b></div>
+        <div class="stat"><span>Lines</span><b id="uiLines" class="num">0</b></div>
+        <div class="stat"><span>Combo</span><b id="uiCombo" class="num">—</b></div>
+        <div class="stat"><span>Time</span><b id="uiTime" class="num">0:00</b></div>
+      </div>
+      <button id="btnSound" class="btn small">🔊 Sound on</button>
+    </section>
+
+    <section id="stage">
+      <div id="boardWrap">
+        <canvas id="board"></canvas>
+        <div id="fx"></div>
+
+        <div class="screen" id="screenStart">
+          <p class="hint">Clear lines. Chase the neon.</p>
+          <button class="btn" id="btnStart">▶&nbsp; Start</button>
+          <p class="tiny">or press <kbd>Enter</kbd></p>
+        </div>
+
+        <div class="screen hidden" id="screenPause">
+          <h2 class="big">PAUSED</h2>
+          <button class="btn" id="btnResume">Resume</button>
+          <p class="tiny">press <kbd>P</kbd></p>
+        </div>
+
+        <div class="screen hidden" id="screenOver">
+          <h2 class="big over">GAME OVER</h2>
+          <p class="score-line">Score <b id="overScore" class="num">0</b></p>
+          <p class="tiny" id="overBest"></p>
+          <button class="btn" id="btnRestart">↻&nbsp; Play again</button>
+        </div>
+      </div>
+
+      <div id="touch">
+        <button data-act="left"  aria-label="Move left">◀</button>
+        <button data-act="soft"  aria-label="Soft drop">▼</button>
+        <button data-act="ccw"   aria-label="Rotate counter-clockwise">⟲</button>
+        <button data-act="cw"    aria-label="Rotate clockwise">⟳</button>
+        <button data-act="right" aria-label="Move right">▶</button>
+        <button data-act="pause" aria-label="Pause">⏸</button>
+        <button data-act="drop" class="wide">⤓ DROP</button>
+      </div>
+    </section>
+
+    <section class="col" id="colRight">
+      <div class="panel">
+        <h3 class="ph">Next</h3>
+        <canvas id="nextCv"></canvas>
+      </div>
+      <div class="panel keys">
+        <h3 class="ph">Controls</h3>
+        <ul>
+          <li><kbd>←</kbd><kbd>→</kbd><span>Move</span></li>
+          <li><kbd>↓</kbd><span>Soft drop</span></li>
+          <li><kbd>Space</kbd><span>Hard drop</span></li>
+          <li><kbd>↑</kbd>/<kbd>X</kbd><span>Rotate ⟳</span></li>
+          <li><kbd>Z</kbd><span>Rotate ⟲</span></li>
+          <li><kbd>A</kbd><span>Flip 180°</span></li>
+          <li><kbd>C</kbd><span>Hold</span></li>
+          <li><kbd>P</kbd><span>Pause</span></li>
+          <li><kbd>M</kbd><span>Mute</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/audio.js"></script>
+<script src="js/background.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
